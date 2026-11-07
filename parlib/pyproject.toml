@@ -1,0 +1,9 @@
+[project]
+name = "parlib"
+version = "0.1.0"
+description = "Parameter files to tables and back (lilak-par, …), with the hashes that tell two sets apart"
+requires-python = ">=3.10"
+
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"

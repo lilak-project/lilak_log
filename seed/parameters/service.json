@@ -1,0 +1,30 @@
+{
+  "kind": "rack",
+  "mode": "managed",
+  "label": "파라미터",
+  "start": {
+    "cmd": "sh /app/lilak_log/parameters/portal-serve.sh {port}",
+    "cwd": "/app/lilak_log/parameters",
+    "env": {}
+  },
+  "health": "/",
+  "entry": "/",
+  "url": null,
+  "token": null,
+  "identity": {
+    "accepts_portal_token": true,
+    "link_by": "email"
+  },
+  "capabilities": {
+    "multi_project": true,
+    "import_export": true,
+    "tags": "log"
+  },
+  "entry_project": "sets",
+  "autostart": [
+    "sets"
+  ],
+  "icon": "sliders",
+  "color": "#7c3aed",
+  "open": "panel"
+}

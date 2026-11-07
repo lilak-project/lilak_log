@@ -1,0 +1,11 @@
+.pa-reg, .pa-tbl { display: flex; flex-direction: column; gap: 10px; padding: 10px 12px; min-width: 0; }
+.pa-row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.pa-in { font: inherit; padding: 4px 8px; border: 1px solid var(--rk-line); background: transparent; color: var(--rk-ink); min-width: 0; }
+.pa-grow { flex: 1 1 220px; }
+.pa-text { font-family: var(--font-mono); font-size: var(--fs-small); min-height: 260px; padding: 8px;
+  border: 1px solid var(--rk-line); background: transparent; color: var(--rk-ink); resize: vertical; }
+.pa-same { color: var(--rk-ink); }
+.pa-grid { width: 100%; border-collapse: collapse; }
+.pa-grid th { text-align: left; font-weight: inherit; color: var(--rk-mute); border-bottom: 1px solid var(--rk-line); padding: 3px 8px; }
+.pa-grid td { border-bottom: 1px solid var(--rk-line); padding: 3px 8px; vertical-align: top; }
+.pa-mono { font-family: var(--font-mono); font-size: var(--fs-small); word-break: break-all; }
