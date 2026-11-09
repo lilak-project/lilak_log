@@ -1,4 +1,4 @@
-"""parlib checks: python3 tests/test_lilak_par.py [lilak checkout to round-trip]."""
+"""parlib checks: python3 tests/test_lilak_par.py [lilak checkout] [folder of .xcfg] — each round-trips."""
 import sys
 from pathlib import Path
 
@@ -35,6 +35,39 @@ assert ha["value_hash"] == hb["value_hash"] and ha["text_hash"] != hb["text_hash
 assert parlib.hashes("a 2\nb 2\n", "lilak-par")["value_hash"] != ha["value_hash"]
 assert parlib.parse("x", "manual") is None and parlib.hashes("x", "manual")["count"] is None
 
+# GET xcfg: paths, ids, repeated siblings, comments, attributes; byte-for-byte back.
+X = """<?xml version="1.0" encoding="UTF-8"?>
+<Setup id="Conditions">
+\t<!-- Parameters specific
+\t     to GetController -->
+\t<ECC>
+\t\t<Verbose>true</Verbose>
+\t</ECC>
+\t<Node id="CoBo">
+\t\t<Instance id="*">
+\t\t\t<!-- Number of time buckets. -->
+\t\t\t<readoutDepth unit="buckets" range="[0, 512]">512</readoutDepth>
+\t\t\t<Reg>1</Reg>
+\t\t\t<Reg>2</Reg>
+\t\t\t<channel id="46" />
+\t\t</Instance>
+\t\t<Revision id="5" include="x.xcfg" />
+\t</Node>
+</Setup>
+"""
+rows = parlib.parse(X, "get-xcfg")
+by = {r["path"]: r for r in rows if r["path"]}
+assert by["ECC"]["kind"] == "group" and by["ECC"]["comment"] == "Parameters specific to GetController"
+assert by["ECC/Verbose"]["value"] == "true"
+d = by["Node[CoBo]/Instance[*]/readoutDepth"]
+assert (d["value"], d["unit"], d["range"], d["comment"]) == ("512", "buckets", "[0, 512]", "Number of time buckets.")
+assert by["Node[CoBo]/Instance[*]/Reg#2"]["value"] == "2"
+assert by["Node[CoBo]/Instance[*]/channel[46]"]["kind"] == "key"
+assert by["Node[CoBo]/Revision[5]"]["value"] == "include=x.xcfg"
+assert parlib.render(rows, "get-xcfg") == X
+d["value"] = "256"
+assert '<readoutDepth unit="buckets" range="[0, 512]">256</readoutDepth>' in parlib.render(rows, "get-xcfg")
+
 # Every parameter file of a LILAK checkout round-trips.
 if len(sys.argv) > 1:
     n = 0
@@ -47,4 +80,13 @@ if len(sys.argv) > 1:
             assert parlib.render(parlib.parse(t, "lilak-par"), "lilak-par") == t, p
             n += 1
     print(f"{n} files round-trip")
+if len(sys.argv) > 2:
+    xs = sorted(Path(sys.argv[2]).rglob("*.xcfg"))
+    for p in xs:
+        t = p.read_text(encoding="utf-8")
+        rows = parlib.parse(t, "get-xcfg")
+        assert parlib.render(rows, "get-xcfg") == t, p
+        paths = [r["path"] for r in rows if r["kind"] in ("value", "key")]
+        assert len(paths) == len(set(paths)), p
+    print(f"{len(xs)} xcfg round-trip, paths unique")
 print("OK")

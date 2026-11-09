@@ -16,9 +16,9 @@ platform the prototype is for.
 """
 import hashlib
 
-from . import lilak_par
+from . import lilak_par, xcfg
 
-FORMATS = {"lilak-par": lilak_par}
+FORMATS = {"lilak-par": lilak_par, "get-xcfg": xcfg}
 
 
 def parse(text: str, fmt: str) -> list | None:

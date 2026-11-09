@@ -5,7 +5,18 @@
 .pa-text { font-family: var(--font-mono); font-size: var(--fs-small); min-height: 260px; padding: 8px;
   border: 1px solid var(--rk-line); background: transparent; color: var(--rk-ink); resize: vertical; }
 .pa-same { color: var(--rk-ink); }
-.pa-grid { width: 100%; border-collapse: collapse; }
-.pa-grid th { text-align: left; font-weight: inherit; color: var(--rk-mute); border-bottom: 1px solid var(--rk-line); padding: 3px 8px; }
-.pa-grid td { border-bottom: 1px solid var(--rk-line); padding: 3px 8px; vertical-align: top; }
-.pa-mono { font-family: var(--font-mono); font-size: var(--fs-small); word-break: break-all; }
+/* The editor scrolls as a whole; the table keeps its own height and scrolls inside. */
+.pa-tbl { padding: 0; width: 100%; }
+.pa-tbl-box { height: 60vh; display: flex; flex-direction: column; border: 1px solid var(--rk-line); }
+.pa-tbl-full { flex: 1; min-height: 0; }
+.pa-tbl-fill { flex: 1; min-height: 0; display: flex; flex-direction: column; }
+/* Spreadsheet density: no outer margin, gridlines between cells, a short row. */
+.pa-sheet { gap: 0; --rk-row: 21px; }
+.pa-sheet > .pa-row { gap: 0; border-bottom: 1px solid var(--rk-line); }
+.pa-sheet > .pa-row .pa-in { border: 0; padding: 3px 8px; }
+.pa-sheet > .pa-row .rl-hint { padding: 0 8px; }
+.pa-sheet .rl-c { padding: 0 4px; font-size: var(--fs-small); }
+.pa-sheet .rl-row > * + * { border-left: 1px solid var(--rk-line); }
+.pa-more { padding: 4px 8px; color: var(--rk-dim); }
+.pa-grp { cursor: pointer; background: var(--rk-hover); font-weight: 600; }
+.pa-sheet > .pa-row .pa-flat { border: 0; border-left: 1px solid var(--rk-line); border-radius: 0; }

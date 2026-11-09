@@ -27,7 +27,7 @@ assert not r["existing"]
 r = c.post("/api/register?format=lilak-par&name=run.par", content="g/\n    x 5\n").json()
 assert r["record"]["files"][0]["name"] == "run.par" and "text" not in r["record"] and r["record"]["title"] == "run.par"
 t = c.get(f"/api/table?id={r['record']['id']}").json()
-assert [(x["path"], x["value"]) for x in t["rows"] if x["kind"] == "value"] == [("g/x", "5")]
+assert [(x["path"], x["value"]) for x in t["rows"] if "value" in x] == [("g/x", "5")]
 assert len(c.get("/api/data").json()["sets"]) == 3
 assert c.post("/api/register", content="  ").status_code == 400
 assert c.post("/api/register", content="x" * (65 * 1024)).status_code == 413

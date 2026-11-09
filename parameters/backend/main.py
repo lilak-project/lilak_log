@@ -113,6 +113,10 @@ def table(id: str, _: dict = Depends(signed_in)) -> dict:
     if rec is None:
         raise HTTPException(404, "그 묶음이 없습니다.")
     rows = parlib.parse(_content(rec), rec.get("format") or "")
+    # Only what the table shows: raw/span are for render and double the payload.
+    keep = ("line", "path", "value", "unit", "range", "comment")
+    rows = rows and [{k: r[k] for k in keep if r.get(k) not in (None, "")}
+                     for r in rows if r.get("kind") in ("value", "key")]
     return {"format": rec.get("format"), "rows": rows}
 
 
