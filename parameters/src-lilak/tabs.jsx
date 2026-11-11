@@ -3,6 +3,7 @@
  * same values when there is one), and the `partable` field: a set's rows in
  * its editor.
  */
+import Select from 'lilak-ui/components/Select.jsx'
 import './strings.js'
 import { useDeferredValue, useEffect, useMemo, useRef, useState } from 'react'
 import { tr } from 'lilak-ui/i18n.jsx'
@@ -41,9 +42,9 @@ export function RegisterTab({ api }) {
     <div className="pa-reg">
       <div className="pa-row">
         <input className="pa-in" value={title} onChange={(e) => setTitle(e.target.value)} placeholder={tr('pa_f_title')} />
-        <select className="pa-in" value={format} onChange={(e) => setFormat(e.target.value)}>
+        <Select className="pa-in" value={format} onChange={(e) => setFormat(e.target.value)}>
           {FORMATS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
-        </select>
+        </Select>
         <button type="button" className="rl-btn" onClick={() => pick.current?.click()}>{tr('pa_reg_file')}</button>
         <input ref={pick} type="file" hidden onChange={(e) => { setFile(e.target.files?.[0] || null); e.target.value = '' }} />
         {file && <span className="rl-hint">{file.name} <button type="button" className="rl-x" onClick={() => setFile(null)}>×</button></span>}
