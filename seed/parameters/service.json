@@ -1,7 +1,8 @@
 {
   "kind": "rack",
   "mode": "managed",
-  "label": "파라미터",
+  "label": "parameters",
+  "labels": {"ko": "파라미터"},
   "start": {
     "cmd": "sh /app/lilak_log/parameters/portal-serve.sh {port}",
     "cwd": "/app/lilak_log/parameters",
